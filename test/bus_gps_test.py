@@ -22,8 +22,9 @@ def main():
     for file in file_list:
         for line in open(os.path.join(dir_name, file), 'rt'):
             #1503520,2016-09-05 00:03:44.0,113.5583,34.80898333333333,1,0,19,1,1
-            minute = line.rstrip().split(',')[1][11:16].replace(':', '')
-            minute_dict[minute].append(line)
+            device, t, lon, lat, up_times, down_times, is_station, run_state, is_updown = line.split(',')
+            minute = t[11:16].replace(':', '')
+            minute_dict[minute].append('%s,%s,%s,%s,%s,%s,%s,%s,%s' % (device, t[0:-2], lon, lat, up_times, down_times, is_station, run_state, is_updown))
             if len(minute_dict[minute]) == 1000:
                 with open(os.path.join(dir_gps_minute, minute), 'at') as f:
                     f.writelines(minute_dict[minute])
